@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  h1 Campsite Finder
+  p.lead Find an empty campsite for this weekend.
+  hr
+  .row
+    .col-sm-12
+      if !user
+        h2 You should login to use this service.
+        p
+          a.btn.btn-default(href='/login', role='button') LOGIN »
+      div(class=user ? 'col-sm-2' : 'text-center')
+        img(src='/img/camp.png' class=user ? 'small-img' : undefined)
+
+      .col-sm-10
+        form(method='POST')
+          .form-group
+            label(for='campground') Gampground name
+            input#campground.form-control(type='text', placeholder='Campground name')
+          .form-group
+            label(for='exampleInputPassword1') Password
+            input#exampleInputPassword1.form-control(type='password', placeholder='Password')
+          .form-group
+            label(for='email') Email address
+            input#email.form-control(type='email', placeholder='Your Email Address')
+          button.btn.btn-default(type='submit') Submit

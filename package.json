@@ -1,0 +1,49 @@
+{
+  "name": "campsite-finder",
+  "version": "1.0.0",
+  "description": "campsite-finder",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "mocha --reporter spec",
+    "postinstall": "npm rebuild node-sass"
+  },
+  "dependencies": {
+    "bcrypt-nodejs": "^0.0.3",
+    "bluebird": "^3.4.7",
+    "body-parser": "^1.15.2",
+    "chalk": "^1.1.3",
+    "cheerio": "^0.22.0",
+    "clockwork": "^0.1.4",
+    "compression": "^1.6.2",
+    "connect-mongo": "^1.3.2",
+    "cron": "^1.2.1",
+    "dotenv": "^4.0.0",
+    "errorhandler": "^1.4.3",
+    "express": "^4.14.0",
+    "express-flash": "^0.0.2",
+    "express-session": "^1.14.2",
+    "express-status-monitor": "^0.1.5",
+    "express-validator": "^3.1.2",
+    "lusca": "^1.4.1",
+    "mongoose": "^4.6.6",
+    "morgan": "^1.7.0",
+    "multer": "^1.2.0",
+    "node-sass-middleware": "^0.11.0",
+    "nodemailer": "^3.1.7",
+    "nodemailer-ses-transport": "^1.5.1",
+    "passport": "0.3.2",
+    "passport-local": "^1.0.0",
+    "pug": "^2.0.0-beta6",
+    "request": "^2.78.0",
+    "stripe": "^4.12.0",
+    "validator": "^7.0.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.1.2",
+    "nodemon": "^1.11.0",
+    "sinon": "^2.0.0",
+    "sinon-mongoose": "^1.3.0",
+    "supertest": "^3.0.0"
+  }
+}

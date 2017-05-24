@@ -13,15 +13,58 @@ block content
       div(class=user ? 'col-sm-2' : 'text-center')
         img(src='/img/camp.png' class=user ? 'small-img' : undefined)
 
-      .col-sm-10
-        form(method='POST')
-          .form-group
-            label(for='campground') Gampground name
-            input#campground.form-control(type='text', placeholder='Campground name')
-          .form-group
-            label(for='exampleInputPassword1') Password
-            input#exampleInputPassword1.form-control(type='password', placeholder='Password')
-          .form-group
-            label(for='email') Email address
-            input#email.form-control(type='email', placeholder='Your Email Address')
-          button.btn.btn-default(type='submit') Submit
+      if user
+        .col-sm-10
+          form(method='POST' action='/api/find-campsite')
+            input(type='hidden', name='_csrf', value=_csrf)
+            .form-group
+              label(for='campground') Gampground Name
+              input#campground.form-control(type='text' name='campground' placeholder='Campground name')
+            .form-group
+              label(for='date') Start Date 
+              input#date.form-control(data-provide="datepicker" name='campingDate' data-date-format="D M dd yyyy" data-date-orientation='bottom left')
+            .form-group
+              label(for='lengthOfStay') Length of Stay
+              input#lengthOfStay.form-control(tyle='number' name='lengthOfStay' placeholder='1')
+            .form-group
+              label(for='email') Email address
+              input#email.form-control(type='email' name='email' placeholder='Your Email Address')
+            button.btn.btn-default(type='submit') Submit
+
+  script.
+    function debounce(cb, delay) {
+      let timeout;
+      return (...args) => {
+        let that = this;
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+          console.log("111111")
+          cb.apply(that, args);
+        }, delay)
+      }
+    }
+
+    const getCampsiteList = (() => {
+      let ajaxReq = null;
+      return () => {
+        const qs = $('#campground').val().trim();
+        console.log(qs);
+        if(qs.length < 3) return;
+        if(ajaxReq) {
+          ajaxReq.abort();
+          ajaxReq = null;
+        }
+        ajaxReq = $.ajax({
+          type: 'GET',
+          url: '/api/getCampsites',
+          data: {qs}
+        })
+        .then(res => {
+          console.log(res);
+          ajaxReq = null;
+        });
+      }
+    })();
+
+    $('#campground').on('keyup', debounce(getCampsiteList, 1000));
+    

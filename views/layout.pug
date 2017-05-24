@@ -9,7 +9,11 @@ html
     title #{title}
     link(rel='shortcut icon', href='/favicon.png')
     link(rel='stylesheet', href='/css/main.css')
-
+    script(src='/js/lib/jquery-3.1.1.min.js')
+    script(src='/js/lib/bootstrap.min.js')
+    if user
+      script(src='/js/lib/bootstrap-datepicker.min.js')
+    script(src='/js/main.js')
   body
     include partials/header
 
@@ -19,6 +23,4 @@ html
 
     include partials/footer
 
-    script(src='/js/lib/jquery-3.1.1.min.js')
-    script(src='/js/lib/bootstrap.min.js')
-    script(src='/js/main.js')
+    

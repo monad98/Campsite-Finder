@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const campgroundSchema = new mongoose.Schema({
   _id: {type: Number, unique: true},
-  name: String,
+  name: {type: String, text: true},
   lName: String,
   // parkId: Number,
   state: String,

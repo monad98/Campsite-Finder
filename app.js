@@ -45,7 +45,7 @@ const app = express();
  * Connect to MongoDB.
  */
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGODB_URI);
+mongoose.connect(process.env.MONGODB_TEST_URI);
 mongoose.connection.on('error', (err) => {
   console.error(err);
   console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
@@ -76,7 +76,7 @@ app.use(session({
   saveUninitialized: true,
   secret: process.env.SESSION_SECRET,
   store: new MongoStore({
-    url: process.env.MONGODB_URI,
+    url: process.env.MONGODB_TEST_URI,
     autoReconnect: true,
     clear_interval: 3600
   })
@@ -120,17 +120,18 @@ app.get('/', homeController.index);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
 app.get('/logout', userController.logout);
-// app.get('/signup', userController.getSignup);
-// app.post('/signup', userController.postSignup);
+app.get('/signup', userController.getSignup);
+app.post('/signup', userController.postSignup);
 app.get('/contact', contactController.getContact);
 app.post('/contact', contactController.postContact);
 app.get('/account', passportConfig.isAuthenticated, userController.getAccount);
 app.post('/account/profile', passportConfig.isAuthenticated, userController.postUpdateProfile);
 
 /**
- * API examples routes.
+ * API routes.
  */
-// app.get('/api/clockwork', apiController.getClockwork);
+app.post('/api/find-campsite', passportConfig.isAuthenticated, apiController.findCampsite);
+app.get('/api/getCampsites', passportConfig.isAuthenticated, apiController.getCampsites);
 // app.post('/api/clockwork', apiController.postClockwork);
 // app.get('/api/google-maps', apiController.getGoogleMaps);
 

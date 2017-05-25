@@ -23,10 +23,17 @@ block content
               datalist#campgroundList
             .form-group
               label(for='date') Start Date 
-              input#date.form-control(data-provide="datepicker" name='campingDate' data-date-format="D M dd yyyy" data-date-orientation='bottom left')
+              input#date.form-control(data-provide="datepicker" name='campingDate' data-date-today-highlight='true' data-date-autoclose='true' data-date-format="D M dd yyyy"
+              data-date-orientation='bottom ' +
+              'left')
             .form-group
               label(for='lengthOfStay') Length of Stay
               input#lengthOfStay.form-control(tyle='number' name='lengthOfStay' required)
+            .form-group
+              label(for='method') Site Type
+              select#type.form-control(name='type')
+                each type in [{name: 'Any Camping Site', value: 0}, { name: 'RV Sites', value: 2001}, {name: 'Trailer', value: 2002}, {name: 'Tent', value: 2003}, {name: 'Cabins or Lodgings', value: 10001}, {name: 'Group' + ' Sites', value: 9002}, {name: 'Day' + ' use', value: 9001}, {name: 'Horse sites', value: 3001}, {name: 'Boat sites', value: 2004}]
+                  option(value=type.value) #{type.name}
             .form-group
               label(for='method') Notification Method
               select#notiMethod.form-control
@@ -49,7 +56,6 @@ block content
         let that = this;
         clearTimeout(timeout);
         timeout = setTimeout(() => {
-          console.log("111111")
           cb.apply(that, args);
         }, delay)
       }
@@ -60,7 +66,6 @@ block content
       let ajaxReq = null;
       return () => {
         const qs = $('#campground').val().trim();
-        console.log(qs);
         if(qs.length < 3) return;
         if(ajaxReq) {
           ajaxReq.abort();
@@ -72,7 +77,6 @@ block content
           data: {qs}
         })
         .then(campgrounds => {
-          console.log(campgrounds);
           ajaxReq = null;
           $('#campgroundList').empty();
           campgrounds.forEach(camp => {

@@ -1,0 +1,79 @@
+html
+  style(type='text/css').
+    html, body {
+      height: 100%;
+    }
+    html {
+      display: table;
+      margin: auto;
+    }
+    body {
+      display: table-cell;
+    }
+    a { color: #2BA6CB;}
+    h1,h2,h3,h4,h5,h6 {
+      font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; line-height: 1.1; margin-bottom:15px; color:#000;
+    }
+    h3 { font-weight:500; font-size: 27px;}
+
+    h5 { font-weight: 900; font-size: 17px;}
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      text-align: center;
+      padding: 8px;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2
+    }
+    .btn {
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 10px 15px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+    }
+    .btn.btn-danger {
+      background-color: #af1718;
+    }
+    .container {
+      display:block!important;
+      max-width:600px!important;
+      margin:20px auto!important; /* makes it centered */
+      clear:both!important;
+    }
+    .pull-right {
+      float: right;
+      margin-right: 10px;
+    }
+
+
+  body
+    .container
+      h3 Hello!
+      h5 We found #{available.length} available campsite(s) at #{campground.name} #{campground.state}
+      h5 Date: #{campingDate.toString().split(' ').splice(0,4).join(' ')}
+      table
+        tr
+          th Site#
+          th Type
+          th
+            | Max #
+            br
+            |           of People
+          th Link
+        each info in available
+          tr
+            td= info.siteNumber
+            td= info.type
+            td= info.max
+            td
+              a.btn(href=info.link) Go to site
+      br
+      a.btn.btn-danger.pull-right(href=cancel) Cancel Checking

@@ -23,7 +23,6 @@ exports.savedRequestsPage = (req, res) => {
     .lean()
     .exec()
     .then(jobs => {
-      console.log(typeof jobs[0].updatedAt);
       res.render('saved-request', {
         title: 'Saved Requests',
         jobs

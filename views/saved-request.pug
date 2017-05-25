@@ -1,37 +1,47 @@
 extends layout
 
 block content
+  - const typeObj = {"0":"Any Camping Site","2001":"RV Sites","2002":"Trailer","2003":"Tent","2004":"Boat sites","3001":"Horse sites","9001":"Day use","9002":"Group Sites","10001":"Cabins or Lodgings"}
   .page-header
     h3 Your Saved Requests
-  .row
-    each info in jobs
-      .col-sm-6.col-md-6.col-xs-12.col-lg-6
-        .panel.panel-primary
-          .panel-heading #{info.campground.name},  #{info.campground.state}
-          .panel-body
-            h4
-              span.label.label-success WHEN
-              |  #{info.campingDate}
-            h4
-              span.label.label-success HOW LONG
-              |  #{info.length} days
-            h4
-              span.label.label-success NOTIFICATION METHOD
-              |  #{info.method}
-            if info.phone
+  if jobs.length
+    .row
+      each info in jobs
+        .col-sm-6.col-md-6.col-xs-12.col-lg-6
+          .panel.panel-primary
+            .panel-heading #{info.campground.name},  #{info.campground.state}
+            .panel-body
               h4
-                span.label.label-success MOBILE NUMBER
-                |  #{info.phone}
-            else
+                span.label.label-success WHEN
+                |  #{info.campingDate.toString().split(' ').splice(0,4).join(' ')}
               h4
-                span.label.label-success EMAIL ADDRESS
-                |  #{info.email}
-            h4
-              span.label.label-success LAST CHECK
-              |  #{info.updatedAt.toString().split(' ').splice(0,5).join(' ')}
-
-            .pull-right
-              button.btn.btn-danger.delete(data-id=info._id) CANCEL
+                span.label.label-success HOW LONG
+                |  #{info.lengthOfStay} days
+              if info.type
+                h4
+                  span.label.label-success SITE TYPE
+                  |  #{typeObj[info.type]}
+              h4
+                span.label.label-success NOTIFICATION METHOD
+                |  #{info.method}
+              if info.phone
+                h4
+                  span.label.label-success MOBILE NUMBER
+                  |  #{info.phone}
+              else
+                h4
+                  span.label.label-success EMAIL ADDRESS
+                  |  #{info.email}
+              h4
+                span.label.label-success LAST CHECK
+                if info.updatedAt.toString() !== info.createdAt.toString()
+                  |  #{info.updatedAt.toString().split(' ').splice(0,5).join(' ')}
+                else
+                  |  Not checked yet.
+              .pull-right
+                button.btn.btn-danger.delete(data-id=info._id) CANCEL
+  else
+    h4.text-danger No saved requests yet.
 
   script.
     $('button.delete').on('click', function() {

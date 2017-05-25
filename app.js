@@ -15,7 +15,6 @@ const path = require('path');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const expressValidator = require('express-validator');
-const expressStatusMonitor = require('express-status-monitor');
 const flash = require('express-flash');
 const sass = require('node-sass-middleware');
 
@@ -51,6 +50,8 @@ mongoose.connection.on('error', (err) => {
   console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
   process.exit();
 });
+require('./cronjob/cronjob');
+
 if(process.env.SEED_DB === "true") { require('./config/seed'); }
 
 
@@ -61,7 +62,6 @@ app.set('port', process.env.PORT || 3000);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-app.use(expressStatusMonitor());
 app.use(compression());
 app.use(sass({
   src: path.join(__dirname, 'public'),
@@ -133,7 +133,7 @@ app.post('/contact', contactController.postContact);
  */
 app.post('/api/find-campsite', passportConfig.isAuthenticated, apiController.findCampsite);
 app.get('/api/getCampsites', passportConfig.isAuthenticated, apiController.getCampsites);
-app.delete('/api/cancel/:id', passportConfig.isAuthenticated, apiController.deleteCronJob);
+app.delete('/api/cancel/:id', apiController.deleteCronJob);
 
 /**
  * Error Handler.
@@ -149,3 +149,4 @@ app.listen(app.get('port'), () => {
 });
 
 module.exports = app;
+

@@ -14,12 +14,15 @@ const campingCronjobSchema = new mongoose.Schema({
     required: true
   },
   campingDate: {
-    type: String,
+    type: Date,
     required: true
   },
   lengthOfStay: {
     type: Number,
     required: true
+  },
+  type: {
+    type: Number
   },
   method: {
     type: String,
@@ -28,9 +31,13 @@ const campingCronjobSchema = new mongoose.Schema({
   },
   email: String,
   phone: String,
-  scrapeFreq: {
+  scrapeFreq: { //we don't use this
     type: Number,
     default: 300000 //5 minutes
+  },
+  hadEmptySites: {
+    type: Boolean,
+    default: false
   }
 
 }, { timestamps: true });

@@ -1,12 +1,13 @@
 const nodemailer = require('nodemailer');
 const ses = require('nodemailer-ses-transport');
 
-const transporter = nodemailer.createTransport(ses({
-  region: 'us-west-2',
-  accessKeyId: process.env.AMAZON_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AMAZON_SECRET_ACCESS_KEY
-}));
-
+const transporter = nodemailer.createTransport({
+  service: 'Mailgun',
+  auth: {
+    user: [process.env.MAILGUN_USER],
+    pass: [process.env.MAILGUN_PASSWORD]
+  }
+});
 /**
  * GET /contact
  * Contact form page.

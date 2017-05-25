@@ -1,0 +1,44 @@
+extends layout
+
+block content
+  .page-header
+    h3 Your Saved Requests
+  .row
+    each info in jobs
+      .col-sm-6.col-md-6.col-xs-12.col-lg-6
+        .panel.panel-primary
+          .panel-heading #{info.campground.name},  #{info.campground.state}
+          .panel-body
+            h4
+              span.label.label-success WHEN
+              |  #{info.campingDate}
+            h4
+              span.label.label-success HOW LONG
+              |  #{info.length} days
+            h4
+              span.label.label-success NOTIFICATION METHOD
+              |  #{info.method}
+            if info.phone
+              h4
+                span.label.label-success MOBILE NUMBER
+                |  #{info.phone}
+            else
+              h4
+                span.label.label-success EMAIL ADDRESS
+                |  #{info.email}
+            h4
+              span.label.label-success LAST CHECK
+              |  #{info.updatedAt.toString().split(' ').splice(0,5).join(' ')}
+
+            .pull-right
+              button.btn.btn-danger.delete(data-id=info._id) CANCEL
+
+  script.
+    $('button.delete').on('click', function() {
+      const id = $(this).attr('data-id');
+      $.ajax({
+        type: 'DELETE',
+        url: `/api/cancel/${id}`,
+        data: {_csrf: `#{_csrf}` }
+      }).done(() => window.location.replace('/saved'));
+    });

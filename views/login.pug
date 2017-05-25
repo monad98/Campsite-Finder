@@ -1,9 +1,9 @@
-extends ../layout
+extends layout
 
 block content
   .page-header
-    h3 Sign up
-  form.form-horizontal(id='signup-form', method='POST')
+    h3 Login
+  form.form-horizontal(method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
     .form-group
       label.col-sm-3.control-label(for='email') Email
@@ -14,11 +14,10 @@ block content
       .col-sm-7
         input.form-control(type='password', name='password', id='password', placeholder='Password', required)
     .form-group
-      label.col-sm-3.control-label(for='confirmPassword') Confirm Password
-      .col-sm-7
-        input.form-control(type='password', name='confirmPassword', id='confirmPassword', placeholder='Confirm Password', required)
-    .form-group
       .col-sm-offset-3.col-sm-7
-        button.btn.btn-success(type='submit')
-          i.fa.fa-user-plus
-          | Signup
+        button.col-sm-3.btn.btn-primary(type='submit')
+          i.fa.fa-user
+          | Login
+    .col-sm-offset-3.col-sm-7
+      p Forgot your password? There is no way to find your password. You screwed up!
+

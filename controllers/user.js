@@ -2,13 +2,13 @@ const bluebird = require('bluebird');
 const crypto = bluebird.promisifyAll(require('crypto'));
 const nodemailer = require('nodemailer');
 const passport = require('passport');
-const User = require('../models/User');
+const User = require('../models/user');
 
 /**
  * GET /login
  * Login page.
  */
-exports.getLogin = (req, res) => {
+exports.loginPage = (req, res) => {
   if (req.user) {
     return res.redirect('/');
   }
@@ -21,7 +21,7 @@ exports.getLogin = (req, res) => {
  * POST /login
  * Sign in using email and password.
  */
-exports.postLogin = (req, res, next) => {
+exports.login = (req, res, next) => {
   req.assert('email', 'Email is not valid').isEmail();
   req.assert('password', 'Password cannot be blank').notEmpty();
   req.sanitize('email').normalizeEmail({ remove_dots: false });
@@ -60,7 +60,7 @@ exports.logout = (req, res) => {
  * GET /signup
  * Signup page.
  */
-exports.getSignup = (req, res) => {
+exports.signupPage = (req, res) => {
   if (req.user) {
     return res.redirect('/');
   }
@@ -73,7 +73,7 @@ exports.getSignup = (req, res) => {
  * POST /signup
  * Create a new local account.
  */
-exports.postSignup = (req, res, next) => {
+exports.createAccount = (req, res, next) => {
   req.assert('email', 'Email is not valid').isEmail();
   req.assert('password', 'Password must be at least 4 characters long').len(4);
   req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
@@ -108,51 +108,4 @@ exports.postSignup = (req, res, next) => {
     });
   });
 };
-
-/**
- * GET /account
- * Profile page.
- */
-exports.getAccount = (req, res) => {
-  res.render('account/profile', {
-    title: 'Account Management'
-  });
-};
-
-/**
- * POST /account/profile
- * Update profile information.
- */
-exports.postUpdateProfile = (req, res, next) => {
-  req.assert('email', 'Please enter a valid email address.').isEmail();
-  req.sanitize('email').normalizeEmail({ remove_dots: false });
-
-  const errors = req.validationErrors();
-
-  if (errors) {
-    req.flash('errors', errors);
-    return res.redirect('/account');
-  }
-
-  User.findById(req.user.id, (err, user) => {
-    if (err) { return next(err); }
-    user.email = req.body.email || '';
-    user.profile.name = req.body.name || '';
-    user.profile.gender = req.body.gender || '';
-    user.profile.location = req.body.location || '';
-    user.profile.website = req.body.website || '';
-    user.save((err) => {
-      if (err) {
-        if (err.code === 11000) {
-          req.flash('errors', { msg: 'The email address you have entered is already associated with an account.' });
-          return res.redirect('/account');
-        }
-        return next(err);
-      }
-      req.flash('success', { msg: 'Profile information has been updated.' });
-      res.redirect('/account');
-    });
-  });
-};
-
 

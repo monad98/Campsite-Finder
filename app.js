@@ -26,7 +26,7 @@ dotenv.load({ path: '.env' });
 /**
  * Controllers (route handlers).
  */
-const homeController = require('./controllers/home');
+const htmlController = require('./controllers/html');
 const userController = require('./controllers/user');
 const apiController = require('./controllers/api');
 const contactController = require('./controllers/contact');
@@ -45,7 +45,7 @@ const app = express();
  * Connect to MongoDB.
  */
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGODB_TEST_URI);
+mongoose.connect(process.env.MONGODB_URI);
 mongoose.connection.on('error', (err) => {
   console.error(err);
   console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
@@ -76,7 +76,7 @@ app.use(session({
   saveUninitialized: true,
   secret: process.env.SESSION_SECRET,
   store: new MongoStore({
-    url: process.env.MONGODB_TEST_URI,
+    url: process.env.MONGODB_URI,
     autoReconnect: true,
     clear_interval: 3600
   })
@@ -116,24 +116,24 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
 /**
  * Primary app routes.
  */
-app.get('/', homeController.index);
-app.get('/login', userController.getLogin);
-app.post('/login', userController.postLogin);
+app.get('/', htmlController.index);
+app.get('/saved', passportConfig.isAuthenticated, htmlController.savedRequestsPage);
+
+app.get('/login', userController.loginPage);
+app.get('/signup', userController.signupPage);
+app.post('/login', userController.login);
 app.get('/logout', userController.logout);
-app.get('/signup', userController.getSignup);
-app.post('/signup', userController.postSignup);
-app.get('/contact', contactController.getContact);
+app.post('/signup', userController.createAccount);
+
+app.get('/contact', contactController.contactPage);
 app.post('/contact', contactController.postContact);
-app.get('/account', passportConfig.isAuthenticated, userController.getAccount);
-app.post('/account/profile', passportConfig.isAuthenticated, userController.postUpdateProfile);
 
 /**
  * API routes.
  */
 app.post('/api/find-campsite', passportConfig.isAuthenticated, apiController.findCampsite);
 app.get('/api/getCampsites', passportConfig.isAuthenticated, apiController.getCampsites);
-// app.post('/api/clockwork', apiController.postClockwork);
-// app.get('/api/google-maps', apiController.getGoogleMaps);
+app.delete('/api/cancel/:id', passportConfig.isAuthenticated, apiController.deleteCronJob);
 
 /**
  * Error Handler.

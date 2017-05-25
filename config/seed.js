@@ -22803,7 +22803,7 @@ const seeds = [
 }];
 
 // const Campgrounds = require('../model/Campground.js');
-const Campgrounds = require('../models/Campground');
+const Campgrounds = require('../models/campground');
 
 Campgrounds.find({}).remove(() => {
   Campgrounds.insertMany(seeds, (err) => {

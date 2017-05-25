@@ -1,18 +1,17 @@
 const nodemailer = require('nodemailer');
+const ses = require('nodemailer-ses-transport');
 
-const transporter = nodemailer.createTransport({
-  service: 'SendGrid',
-  auth: {
-    user: process.env.SENDGRID_USER,
-    pass: process.env.SENDGRID_PASSWORD
-  }
-});
+const transporter = nodemailer.createTransport(ses({
+  region: 'us-west-2',
+  accessKeyId: process.env.AMAZON_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AMAZON_SECRET_ACCESS_KEY
+}));
 
 /**
  * GET /contact
  * Contact form page.
  */
-exports.getContact = (req, res) => {
+exports.contactPage = (req, res) => {
   res.render('contact', {
     title: 'Contact'
   });
@@ -36,8 +35,8 @@ exports.postContact = (req, res) => {
 
   const mailOptions = {
     to: process.env.EMAIL_ADDRESS,
-    from: `${req.body.name} <${req.body.email}>`,
-    subject: 'Campsite Finder',
+    from: `CAMPSITE FINDER <${process.env.EMAIL_ADDRESS}>`,
+    subject: `Campsite Finder - ${req.body.name} ${req.body.email} `,
     text: req.body.message
   };
 

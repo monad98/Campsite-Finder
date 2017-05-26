@@ -1,5 +1,5 @@
 const CampingCronjob = require('../models/campingCronjob');
-
+const moment = require('moment');
 
 /**
  * GET /
@@ -7,7 +7,7 @@ const CampingCronjob = require('../models/campingCronjob');
  */
 exports.index = (req, res) => {
   res.render('home', {
-    title: 'Campsite Finder'
+    title: 'Campsite Finder', dayAfterTomorrow: moment().startOf('day').add(2, 'days').toDate()
   });
 };
 

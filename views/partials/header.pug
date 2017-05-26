@@ -15,6 +15,9 @@
           a(href='/') Home
         li(class=(title == 'Contact') ? 'active' : undefined)
           a(href='/contact') Contact
+        if user
+          li(class=(title == 'Saved Requests') ? 'active' : undefined)
+            a(href='/saved') Saved Requests
       ul.nav.navbar-nav.navbar-right
         if !user
           li(class=(title == 'Login') ? 'active' : undefined)

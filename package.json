@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "description": "campsite-finder",
   "scripts": {
-    "start": "nodemon app.js",
-    "test": "mocha --reporter spec",
-    "postinstall": "npm rebuild node-sass"
+    "start": "node app.js",
+    "serve": "nodemon app.js"
   },
   "dependencies": {
     "bcrypt-nodejs": "^0.0.3",

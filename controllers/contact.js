@@ -35,9 +35,9 @@ exports.postContact = (req, res) => {
   }
 
   const mailOptions = {
-    to: process.env.EMAIL_ADDRESS,
-    from: `CAMPSITE FINDER <${process.env.EMAIL_ADDRESS}>`,
-    subject: `Campsite Finder - ${req.body.name} ${req.body.email} `,
+    to: `"CAMPSITE FINDER" <${process.env.EMAIL_ADDRESS}>`,
+    from: `req.body.name <${process.env.EMAIL_ADDRESS}>`,
+    subject: `CONTACT from - ${req.body.name}<${req.body.email}>`,
     text: req.body.message
   };
 

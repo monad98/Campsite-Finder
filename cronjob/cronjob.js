@@ -10,7 +10,6 @@ const moment = require('moment');
 const pug = require('pug');
 const path = require('path');
 const compileMessage = pug.compileFile(path.join(__dirname, 'email-template.pug'));
-const OUR_WEBSITE_URL = 'https://campsites-finder.herokuapp.com';
 const BASEURL = `https://www.reserveamerica.com/camping`;
 
 const pullJobsFromMongodb = () => {
@@ -37,6 +36,7 @@ const pullJobsFromMongodb = () => {
     .lean()
     .exec()
     .then(jobs => {
+      console.log(jobs);
       jobs.forEach(job => {
         checkEmptySite(job);
       });
@@ -100,7 +100,7 @@ const checkEmptySite = ({_id, campground, campingDate, lengthOfStay, email, phon
             available.push({siteNumber, type, max, link, accessible});
           }
         });
-        const cancel = `${OUR_WEBSITE_URL}/api/cancel/${campground._id}`;
+        const cancel = `${process.env.WEBSITE_URL}/api/cancel/${campground._id}`;
 
         const title = `Campsite Finder - ${numOfavailable} campsite(s) available at ${campground.name}`;
         //USER chose to get notified by email
@@ -130,14 +130,18 @@ const composeMessage = (campground, available, cancel, campingDate) => {
 
 
 function sendSMS (title, phone, link) {
+  console.log('phone num: ' + 1 + phone);
   const message = {
-    To: phone,
-    From: 'Campsite Finder',
+    To: '1' + phone,
+    From: 'Campsite',
     Content: `${title} Link: ${link}`
   };
   return new Promise((resolve, reject) => {
     clockwork.sendSms(message, (err, responseData) => {
-      if (err) reject(err);
+      if (err) {
+        console.log(err);
+        reject(err);
+      }
       resolve(responseData);
     });
   });
@@ -155,7 +159,7 @@ const sendEmail = (title, message, to) => {
   // send mail
   return new Promise((resolve, reject) => {
     transporter.sendMail({
-      from: `"Campsite Finder" <admin@campsitefinder.us>`,
+      from: `"CAMPSITE FINDER" <admin@campsitefinder.us>`,
       to,
       subject: title,
       html: message
@@ -186,7 +190,7 @@ const updateUpdatedAt = (_id) => {
 
 const job = new CronJob({
   // cronTime: '*/10 * * * * *',
-  cronTime: '* */2 * * * *',
+  cronTime: '*/20 * * * * *',
   onTick: pullJobsFromMongodb,
   timeZone: 'America/Los_Angeles',
   start: true

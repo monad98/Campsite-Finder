@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  - const typeObj = {"0":"Any Camping Site","2001":"RV Sites","2002":"Trailer","2003":"Tent","2004":"Boat sites","3001":"Horse sites","9001":"Day use","9002":"Group Sites","10001":"Cabins or Lodgings"}
+  - const typeObj = {"2001":"RV Sites","2002":"Trailer","2003":"Tent","2004":"Boat sites","3001":"Horse sites","9001":"Day use","9002":"Group Sites","10001":"Cabins or Lodgings"}
   .page-header
     h3 Your Saved Requests
   if jobs.length
@@ -17,10 +17,12 @@ block content
               h4
                 span.label.label-success HOW LONG
                 |  #{info.lengthOfStay} days
-              if info.type
-                h4
-                  span.label.label-success SITE TYPE
+              h4
+                span.label.label-success SITE TYPE
+                if info.type
                   |  #{typeObj[info.type]}
+                else
+                  |  Any Camping Sites
               h4
                 span.label.label-success NOTIFICATION METHOD
                 |  #{info.method}

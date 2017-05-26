@@ -44,7 +44,7 @@ const app = express();
  * Connect to MongoDB.
  */
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGODB_TEST_URI);
+mongoose.connect(process.env.MONGODB_URI);
 mongoose.connection.on('error', (err) => {
   console.error(err);
   console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
@@ -76,7 +76,7 @@ app.use(session({
   saveUninitialized: true,
   secret: process.env.SESSION_SECRET,
   store: new MongoStore({
-    url: process.env.MONGODB_TEST_URI,
+    url: process.env.MONGODB_URI,
     autoReconnect: true,
     clear_interval: 3600
   })
@@ -134,6 +134,7 @@ app.post('/contact', contactController.postContact);
 app.post('/api/find-campsite', passportConfig.isAuthenticated, apiController.findCampsite);
 app.get('/api/getCampsites', passportConfig.isAuthenticated, apiController.getCampsites);
 app.delete('/api/cancel/:id', apiController.deleteCronJob);
+app.get('/api/cancel/:id', apiController.deleteCronJobFromEmail);
 
 /**
  * Error Handler.

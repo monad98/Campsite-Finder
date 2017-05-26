@@ -23,12 +23,12 @@ block content
               datalist#campgroundList
             .form-group
               label(for='date') Start Date 
-              input#date.form-control(data-provide="datepicker" name='campingDate' data-date-today-highlight='true' data-date-autoclose='true' data-date-format="D M dd yyyy"
+              input#date.form-control(data-provide='datepicker' name='campingDate' data-date-start-date=dayAfterTomorrow data-date-today-highlight='true' data-date-autoclose='true' data-date-format="D M dd yyyy"
               data-date-orientation='bottom ' +
               'left')
             .form-group
               label(for='lengthOfStay') Length of Stay
-              input#lengthOfStay.form-control(tyle='number' name='lengthOfStay' required)
+              input#lengthOfStay.form-control(type='number' name='lengthOfStay' placeholder='Number' required)
             .form-group
               label(for='method') Site Type
               select#type.form-control(name='type')
@@ -42,10 +42,10 @@ block content
             .form-group#emailForm
               label(for='email') Email address to be notified of empty sites
               input#email.form-control(type='email' name='email' placeholder='Your Email Address')
-            .form-group#phoneForm(style='display: none')
-              label(for='phone') Mobile number to be notified of empty sites
-              input#email.form-control(type='tel' name='phone' placeholder='Your Mobile Number')
-            button.btn.btn-default(type='submit') Submit
+            //.form-group#phoneForm(style='display: none')
+            //  label(for='phone') Mobile number to be notified of empty sites
+            //  input#email.form-control(type='tel' name='phone' placeholder='Your Mobile Number')
+            button#submit.btn.btn-default(type='submit') Submit
             br
             br
 
@@ -93,15 +93,24 @@ block content
     })();
 
 
+    const emailForm = $('<div id="emailForm" class="form-group">')
+      .append($('<label for="email">').html('Email address to be notified of empty sites'))
+      .append($('<input id="email" class="form-control" type="email" name="email" placeholder="Your Email Address">'));
+
+    const phoneForm = $('<div id="phoneForm" class="form-group">')
+      .append($('<label for="phone">').html('Mobile number to be notified of empty sites. Only US mobile numbers are supported'))
+      .append($('<input id="phone" class="form-control" type="tel" name="phone" placeholder="123-456-7890">'));
+
+    const submitButton = $('button#submit');
     //Show and hide email and phone number form depending on user choice
     $('select#notiMethod').on('change', function () {
       const method = $(this).val();
       if(method === 'email') {
-        $('#emailForm').show();
-        $('#phoneForm').hide();
+        submitButton.before(emailForm);
+        $('#phoneForm').remove();
       } else {
-        $('#emailForm').hide();
-        $('#phoneForm').show();
+        submitButton.before(phoneForm);
+        $('#emailForm').remove();
       }
     })
 

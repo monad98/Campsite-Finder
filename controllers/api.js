@@ -6,11 +6,13 @@ const moment = require('moment');
 
 
 const findCampsite = function(req, res, next) {
-  if(req.body['email']) req.checkBody('email', 'Email is not valid').optional().isEmail();
+  if(req.body.phone) req.body.phone = req.body.phone.split('-').join('');
+  req.checkBody('campground', 'Campground can not be empty.').notEmpty();
+  req.checkBody('email', 'Email is not valid').optional().isEmail();
   req.checkBody('campingDate', 'Start Date is not valid').isDate();
   req.checkBody('campingDate', 'Start Date can not be the past').isAfter();
   req.checkBody('lengthOfStay', 'Length of Stay should be a number').isNumeric();
-  if(req.body['phone']) req.checkBody('phone', 'Mobile number is not valid').optional().isMobilePhone('en-US');
+  req.checkBody('phone', 'Mobile number is not valid').optional().isMobilePhone('en-US');
   if(req.body['email']) req.sanitizeBody('email').normalizeEmail({ remove_dots: false });
   req.sanitizeBody('campGround').trim();
 
@@ -27,6 +29,7 @@ const findCampsite = function(req, res, next) {
       body.campground = campground;
       body.method = body.phone ? 'SMS' : 'Email';
       body.campingDate = moment(body.campingDate, 'ddd MMM DD YYYY').toDate();
+      if(body.phone) body.phone = body.phone.split('-').join();
       if(!+body.type) delete body.type;
       const newCampingCronjob = new CampingCronjob(body);
       newCampingCronjob.save()
@@ -51,8 +54,16 @@ const deleteCronJob = function (req, res, next) {
     .catch(err => next(err));
 };
 
+const deleteCronJobFromEmail = function (req, res, next) {
+  const _id = req.params.id;
+  CampingCronjob.remove({ _id })
+    .then(() => res.render('stop-notification'))
+    .catch(err => next(err));
+};
+
 module.exports = {
   findCampsite,
   getCampsites,
-  deleteCronJob
+  deleteCronJob,
+  deleteCronJobFromEmail
 };

@@ -1,79 +1,28 @@
-html
-  style(type='text/css').
-    html, body {
-      height: 100%;
-    }
-    html {
-      display: table;
-      margin: auto;
-    }
-    body {
-      display: table-cell;
-    }
-    a { color: #2BA6CB;}
-    h1,h2,h3,h4,h5,h6 {
-      font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; line-height: 1.1; margin-bottom:15px; color:#000;
-    }
-    h3 { font-weight:500; font-size: 27px;}
-
-    h5 { font-weight: 900; font-size: 17px;}
-
-    table {
-      border-collapse: collapse;
-      width: 100%;
-    }
-    th, td {
-      text-align: center;
-      padding: 8px;
-    }
-    tr:nth-child(even) {
-      background-color: #f2f2f2
-    }
-    .btn {
-      background-color: #4CAF50;
-      border: none;
-      color: white;
-      padding: 10px 15px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 16px;
-    }
-    .btn.btn-danger {
-      background-color: #af1718;
-    }
-    .container {
-      display:block!important;
-      max-width:600px!important;
-      margin:20px auto!important; /* makes it centered */
-      clear:both!important;
-    }
-    .pull-right {
-      float: right;
-      margin-right: 10px;
-    }
-
-
-  body
-    .container
-      h3 Hello!
-      h5 We found #{available.length} available campsite(s) at #{campground.name} #{campground.state}
+html(style="height: 100%;display: table;margin: auto;")
+  body(style='height: 100%;display: table-cell;')
+    .container(style='display:block!important;max-width:600px!important;margin:20px auto!important;clear:both!important;')
+      h3(style='font-weight:500; font-size: 27px;') Hello!
+      h5(style='font-weight: 900; font-size: 17px;') We found #{available.length} available campsite(s) at #{campground.name} #{campground.state}
       h5 Date: #{campingDate.toString().split(' ').splice(0,4).join(' ')}
-      table
+      table(style='border-collapse: collapse;width: 100%;')
         tr
-          th Site#
-          th Type
-          th
+          th(style='text-align: center;padding: 8px;') Site#
+          th(style='text-align: center;padding: 8px;') Type
+          th(style='text-align: center;padding: 8px;')
             | Max #
             br
             |           of People
-          th Link
+          th(style='text-align: center;padding: 8px;') Link
         each info in available
           tr
-            td= info.siteNumber
-            td= info.type
-            td= info.max
-            td
-              a.btn(href=info.link) Go to site
+            td(style='text-align: center;padding: 8px;') #{info.siteNumber}
+            td(style='text-align: center;padding: 8px;') #{info.type}
+            td(style='text-align: center;padding: 8px;') 
+              | #{info.max}
+              if info.accessible
+                br
+                | Accessible 
+            td(style='text-align: center;padding: 8px;')
+              a.btn(href=info.link style='background-color: #4CAF50;border: none;color: white;padding: 10px 15px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;') Go
       br
-      a.btn.btn-danger.pull-right(href=cancel) Cancel Checking
+      a.btn.btn-danger.pull-right(href=cancel style='float: right;margin-right: 10px;background-color: #af1718;border: none;color: white;padding: 10px 15px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;') Cancel Checking

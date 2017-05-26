@@ -46,8 +46,13 @@ block content
               label(for='phone') Mobile number to be notified of empty sites
               input#email.form-control(type='tel' name='phone' placeholder='Your Mobile Number')
             button.btn.btn-default(type='submit') Submit
+            br
+            br
 
   script.
+
+    //variable
+    const campgroundListElem = document.querySelector('#campgroundList');
 
     //input debounce wrapper function
     const debounce = function (cb, delay) {
@@ -78,10 +83,11 @@ block content
         })
         .then(campgrounds => {
           ajaxReq = null;
-          $('#campgroundList').empty();
-          campgrounds.forEach(camp => {
-            $('#campgroundList').append($('<option>').attr("value", camp.name).html(camp.state));
-          });
+          emptyNode(campgroundListElem);
+          console.log(campgrounds.length);
+          for(let i = 0, length = campgrounds.length; i < length; i++) {
+            campgroundListElem.appendChild(makeOptionElem(campgrounds[i].name, campgrounds[i].state));
+          }
         });
       }
     })();
@@ -103,5 +109,17 @@ block content
     //eventlistener for autocomplete
     $('#campground').on('keyup', debounce(getCampsiteList, 400));
 
+    //make option element
+    function makeOptionElem(value, content) {
+      const optionElem = document.createElement('option');
+      optionElem.setAttribute("value", value);
+      optionElem.innerHTML = content;
+      return optionElem;
+    }
 
+    function emptyNode(node) {
+      while(node.hasChildNodes()) {
+        node.removeChild(node.firstChild);
+      }
+    }
     

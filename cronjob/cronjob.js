@@ -85,13 +85,20 @@ const checkEmptySite = ({_id, campground, campingDate, lengthOfStay, email, phon
       let availableLinks, available = [];
       if(numOfavailable) {
         availableLinks = $('table tbody tr td a.now'); // anchor tags of avaiable sites
-        availableLinks.each(function() {
-          const tdElems = $(this).parent().parent().children();
-          const siteNumber = tdElems.eq(0).children().last().children().first().html();
-          const type = tdElems.eq(2).html();
-          const max = tdElems.eq(3).html().split(' ')[0];
-          const link = BASEURL + $(this).attr('href') + '&arvdate=' + moment(campingDate).format('MM/DD/YYYY');
-          available.push({siteNumber, type, max, link});
+        availableLinks.each(function(idx) {
+          if(idx < 5) { // don't parse more than five campsite. Empty sites are enough, so user don't need to use this app.
+            const tdElems = $(this).parent().parent().children();
+            const siteNumber = tdElems.eq(0).children().last().children().first().html();
+            const type = tdElems.eq(2).html();
+            let accessible = false;
+            let max = tdElems.eq(3).html();
+            if(max.length > 10) {
+              max = max.split('<')[0];
+              accessible = true;
+            }
+            const link = BASEURL + $(this).attr('href') + '&arvdate=' + moment(campingDate).format('MM/DD/YYYY');
+            available.push({siteNumber, type, max, link, accessible});
+          }
         });
         const cancel = `${OUR_WEBSITE_URL}/api/cancel/${campground._id}`;
 
@@ -179,7 +186,7 @@ const updateUpdatedAt = (_id) => {
 
 const job = new CronJob({
   // cronTime: '*/10 * * * * *',
-  cronTime: '* */5 * * * *',
+  cronTime: '* */2 * * * *',
   onTick: pullJobsFromMongodb,
   timeZone: 'America/Los_Angeles',
   start: true

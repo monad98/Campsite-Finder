@@ -84,7 +84,6 @@ block content
         .then(campgrounds => {
           ajaxReq = null;
           emptyNode(campgroundListElem);
-          console.log(campgrounds.length);
           for(let i = 0, length = campgrounds.length; i < length; i++) {
             campgroundListElem.appendChild(makeOptionElem(campgrounds[i].name, campgrounds[i].state));
           }

@@ -130,7 +130,6 @@ const composeMessage = (campground, available, cancel, campingDate) => {
 
 
 function sendSMS (title, phone, link) {
-  console.log('phone num: ' + 1 + phone);
   const message = {
     To: '1' + phone,
     From: 'Campsite',
@@ -139,7 +138,6 @@ function sendSMS (title, phone, link) {
   return new Promise((resolve, reject) => {
     clockwork.sendSms(message, (err, responseData) => {
       if (err) {
-        console.log(err);
         reject(err);
       }
       resolve(responseData);

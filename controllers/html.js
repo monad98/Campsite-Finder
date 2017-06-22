@@ -25,7 +25,10 @@ exports.savedRequestsPage = (req, res) => {
     .then(jobs => {
       res.render('saved-request', {
         title: 'Saved Requests',
-        jobs
+        jobs: jobs.map(info => {
+          info.campingDate = moment(info.campingDate).format('llll');
+          return info
+        })
       });
 
 

@@ -36,7 +36,6 @@ const pullJobsFromMongodb = () => {
     .lean()
     .exec()
     .then(jobs => {
-      console.log(jobs);
       jobs.forEach(job => {
         checkEmptySite(job);
       });

@@ -22,7 +22,7 @@ const sass = require('node-sass-middleware');
  * Load environment variables from .env file, where API keys and passwords are configured.
  */
 dotenv.load({ path: '.env' });
-require('newrelic'); // configure new relic
+// require('newrelic'); // configure new relic
 /**
  * Controllers (route handlers).
  */
@@ -59,7 +59,7 @@ if(process.env.SEED_DB === "true") { require('./config/seed'); }
 /**
  * Express configuration.
  */
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 3100);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');

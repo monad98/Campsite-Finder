@@ -28,7 +28,7 @@ exports.savedRequestsPage = (req, res) => {
         jobs: jobs.map(info => {
           console.log(typeof info.updatedAt);
           if (info.updatedAt === info.createdAt) info.updatedAt = 'Not checked yet';
-          else info.updatedAt = moment(info.updatedAt).format('llll');
+          else info.updatedAt = moment(info.updatedAt).from(moment())
           return info
         })
       });

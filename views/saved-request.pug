@@ -36,10 +36,7 @@ block content
                   |  #{info.email}
               h4
                 span.label.label-success LAST CHECK
-                if info.updatedAt.toString() !== info.createdAt.toString()
-                  |  #{info.updatedAt.toString().split(' ').splice(0,5).join(' ')}
-                else
-                  |  Not checked yet.
+                |  #{info.updatedAt}
               .pull-right
                 button.btn.btn-danger.delete(data-id=info._id) CANCEL
   else

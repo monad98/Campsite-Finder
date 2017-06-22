@@ -26,7 +26,9 @@ exports.savedRequestsPage = (req, res) => {
       res.render('saved-request', {
         title: 'Saved Requests',
         jobs: jobs.map(info => {
-          info.campingDate = moment(info.campingDate).format('llll');
+          console.log(typeof info.updatedAt);
+          if (info.updatedAt === info.createdAt) info.updatedAt = 'Not checked yet';
+          else info.updatedAt = moment(info.updatedAt).format('llll');
           return info
         })
       });

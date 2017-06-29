@@ -121,10 +121,10 @@ app.get('/', htmlController.index);
 app.get('/saved', passportConfig.isAuthenticated, htmlController.savedRequestsPage);
 
 app.get('/login', userController.loginPage);
-// app.get('/signup', userController.signupPage);
+app.get('/signup', userController.signupPage);
 app.post('/login', userController.login);
 app.get('/logout', userController.logout);
-// app.post('/signup', userController.createAccount);
+app.post('/signup', userController.createAccount);
 
 app.get('/contact', contactController.contactPage);
 app.post('/contact', contactController.postContact);

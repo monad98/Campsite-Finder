@@ -99,7 +99,7 @@ const checkEmptySite = ({_id, campground, campingDate, lengthOfStay, email, phon
             available.push({siteNumber, type, max, link, accessible});
           }
         });
-        const cancel = `${process.env.WEBSITE_URL}/api/cancel/${campground._id}`;
+        const cancel = `${process.env.WEBSITE_URL}/api/cancel/${_id}`;
 
         const title = `Campsite Finder - ${numOfavailable} campsite(s) available at ${campground.name}`;
         //USER chose to get notified by email

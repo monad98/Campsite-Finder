@@ -184,11 +184,25 @@ const updateUpdatedAt = (_id) => {
     .catch(err => console.log(err));
 };
 
+function keepAwake() {
+  request.get('https://git-me.herokuapp.com/portfolio/2', function(err, res, body) {
+    if(err) return console.log(err);
+    console.log('awaking!');
+  });
+}
+
 
 const job = new CronJob({
   // cronTime: '*/10 * * * * *',
   cronTime: '*/20 * * * * *',
   onTick: pullJobsFromMongodb,
+  timeZone: 'America/Los_Angeles',
+  start: true
+});
+
+const keepAwakeJob = new CronJob({
+  cronTime: '00 */15 * * * *', //every 15 minutes
+  onTick: keepAwake,
   timeZone: 'America/Los_Angeles',
   start: true
 });
